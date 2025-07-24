@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26个小写字母设计</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .letter-box {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .letter-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        svg {
+            border: 1px solid #eee;
+            background: #fafafa;
+        }
+        .stroke {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .line-stroke { stroke: #16a34a; } /* 绿色 - 直线 */
+        .curve-stroke { stroke: #dc2626; } /* 红色 - 曲线 */
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #333;">26个小写字母设计模板</h1>
+    <div class="container" id="letterContainer"></div>
+
+    <script>
+        // 完整的字母设计数据
+        const letterData = {
+            "a": [
+                { type: "line", startX: 410, startY: 510, endX: 410, endY: 300 },
+                { type: "curve", curvePath: "M 410 300 A 80 80 0 0 0 410 460" }
+            ],
+            "b": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 800 },
+                { type: "curve", curvePath: "M 410 800 A 80 80 0 0 0 410 640" }
+            ],
+            "c": [
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 410 700" }
+            ],
+            "d": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 800 },
+                { type: "curve", curvePath: "M 410 800 A 80 80 0 1 1 410 640" }
+            ],
+            "e": [
+                { type: "line", startX: 410, startY: 540, endX: 570, endY: 540 },
+                { type: "curve", curvePath: "M 570 540 A 80 80 0 0 0 410 540" },
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 547 597" }
+            ],
+            "f": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 320 },
+                { type: "curve", curvePath: "M 410 320 A 60 60 0 1 1 530 320" },
+                { type: "line", startX: 530, startY: 380, endX: 290, endY: 380 }
+            ],
+            "g": [
+                { type: "curve", curvePath: "M 410 540 A 55 55 0 0 0 520 540" },
+                { type: "line", startX: 520, startY: 540, endX: 520, endY: 300 },
+                { type: "curve", curvePath: "M 520 300 A 80 80 0 0 0 520 460" }
+            ],
+            "h": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 740 },
+                { type: "curve", curvePath: "M 410 740 A 60 60 0 1 1 530 740" }
+            ],
+            "i": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 580 },
+                { type: "line", startX: 410, startY: 630, endX: 410, endY: 750 }
+            ],
+            "j": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 580 },
+                { type: "line", startX: 410, startY: 650, endX: 410, endY: 740 },
+                { type: "curve", curvePath: "M 410 740 A 50 50 0 1 1 310 740" }
+            ],
+            "k": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 800 },
+                { type: "line", startX: 410, startY: 800, endX: 410, endY: 700 },
+                { type: "line", startX: 410, startY: 700, endX: 475, endY: 635 },
+                { type: "line", startX: 475, startY: 635, endX: 410, endY: 700 },
+                { type: "line", startX: 410, startY: 700, endX: 475, endY: 765 }
+            ],
+            "l": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 740 },
+                { type: "curve", curvePath: "M 410 740 A 50 50 0 0 0 510 740" }
+            ],
+            "m": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 640 },
+                { type: "curve", curvePath: "M 410 640 A 70 70 0 1 1 550 640" },
+                { type: "curve", curvePath: "M 550 640 A 70 70 0 1 1 690 640" }
+            ],
+            "n": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 640 },
+                { type: "curve", curvePath: "M 410 640 A 70 70 0 1 1 550 640" }
+            ],
+            "o": [
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 410 700" },
+                { type: "curve", curvePath: "M 410 700 A 80 80 0 0 0 410 540" }
+            ],
+            "p": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 280 },
+                { type: "curve", curvePath: "M 410 280 A 80 80 0 1 1 410 440" }
+            ],
+            "q": [
+                { type: "curve", curvePath: "M 410 540 A 50 50 0 1 1 310 540" },
+                { type: "line", startX: 310, startY: 540, endX: 310, endY: 280 },
+                { type: "curve", curvePath: "M 310 280 A 80 80 0 0 0 310 440" }
+            ],
+            "r": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 740 },
+                { type: "line", startX: 410, startY: 740, endX: 410, endY: 640 },
+                { type: "curve", curvePath: "M 410 640 A 100 100 0 0 1 510 540" }
+            ],
+            "s": [
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 250 540" },
+                { type: "line", startX: 250, startY: 540, endX: 410, endY: 700 },
+                { type: "curve", curvePath: "M 410 700 A 80 80 0 1 1 250 700" }
+            ],
+            "t": [
+                { type: "line", startX: 410, startY: 540, endX: 410, endY: 760 },
+                { type: "curve", curvePath: "M 410 760 A 50 50 0 0 0 510 760" },
+                { type: "line", startX: 510, startY: 660, endX: 310, endY: 660 }
+            ],
+            "u": [
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 570 540" },
+                { type: "line", startX: 570, startY: 540, endX: 570, endY: 620 }
+            ],
+            "v": [
+                { type: "line", startX: 410, startY: 540, endX: 490, endY: 620 },
+                { type: "line", startX: 490, startY: 620, endX: 570, endY: 540 }
+            ],
+            "w": [
+                { type: "line", startX: 410, startY: 540, endX: 490, endY: 620 },
+                { type: "line", startX: 490, startY: 620, endX: 570, endY: 540 },
+                { type: "line", startX: 570, startY: 540, endX: 650, endY: 620 },
+                { type: "line", startX: 650, startY: 620, endX: 730, endY: 540 }
+            ],
+            "x": [
+                { type: "line", startX: 410, startY: 540, endX: 560, endY: 690 },
+                { type: "line", startX: 560, startY: 540, endX: 410, endY: 690 }
+            ],
+            "y": [
+                { type: "curve", curvePath: "M 410 540 A 80 80 0 0 0 570 540" },
+                { type: "line", startX: 570, startY: 540, endX: 570, endY: 740 },
+                { type: "curve", curvePath: "M 570 740 A 50 50 0 1 1 470 740" }
+            ],
+            "z": [
+                { type: "line", startX: 410, startY: 540, endX: 560, endY: 540 },
+                { type: "line", startX: 560, startY: 540, endX: 410, endY: 690 },
+                { type: "line", startX: 410, startY: 690, endX: 560, endY: 690 }
+            ]
+        };
+
+        // 解析SVG路径中的弧形参数并计算边界框
+        function getArcBounds(x1, y1, rx, ry, angle, largeArcFlag, sweepFlag, x2, y2) {
+            // 简化的弧形边界框计算
+            const minX = Math.min(x1, x2) - rx;
+            const maxX = Math.max(x1, x2) + rx;
+            const minY = Math.min(y1, y2) - ry;
+            const maxY = Math.max(y1, y2) + ry;
+            
+            return { minX, maxX, minY, maxY };
+        }
+
+        // 解析曲线路径并计算边界框
+        function parseCurvePath(curvePath) {
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            
+            // 匹配 M x y A rx ry rotation large-arc-flag sweep-flag x y 格式
+            const arcMatch = curvePath.match(/M\s*([\d.]+)\s*([\d.]+)\s*A\s*([\d.]+)\s*([\d.]+)\s*([\d.]+)\s*([\d.]+)\s*([\d.]+)\s*([\d.]+)\s*([\d.]+)/);
+            
+            if (arcMatch) {
+                const x1 = parseFloat(arcMatch[1]);
+                const y1 = parseFloat(arcMatch[2]);
+                const rx = parseFloat(arcMatch[3]);
+                const ry = parseFloat(arcMatch[4]);
+                const x2 = parseFloat(arcMatch[8]);
+                const y2 = parseFloat(arcMatch[9]);
+                
+                const bounds = getArcBounds(x1, y1, rx, ry, 0, 0, 0, x2, y2);
+                minX = bounds.minX;
+                maxX = bounds.maxX;
+                minY = bounds.minY;
+                maxY = bounds.maxY;
+            } else {
+                // 备用方案：提取所有数字作为坐标
+                const matches = curvePath.match(/([\d.]+)/g);
+                if (matches) {
+                    for (let i = 0; i < matches.length; i += 2) {
+                        const x = parseFloat(matches[i]);
+                        const y = parseFloat(matches[i + 1]);
+                        if (!isNaN(x) && !isNaN(y)) {
+                            minX = Math.min(minX, x);
+                            maxX = Math.max(maxX, x);
+                            minY = Math.min(minY, y);
+                            maxY = Math.max(maxY, y);
+                        }
+                    }
+                }
+            }
+            
+            return { minX, maxX, minY, maxY };
+        }
+
+        function createLetterSVG(letter, data) {
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            
+            // 计算所有笔画的边界框
+            data.forEach(stroke => {
+                if (stroke.type === 'line') {
+                    minX = Math.min(minX, stroke.startX, stroke.endX);
+                    maxX = Math.max(maxX, stroke.startX, stroke.endX);
+                    minY = Math.min(minY, stroke.startY, stroke.endY);
+                    maxY = Math.max(maxY, stroke.startY, stroke.endY);
+                } else if (stroke.type === 'curve') {
+                    const curveBounds = parseCurvePath(stroke.curvePath);
+                    minX = Math.min(minX, curveBounds.minX);
+                    maxX = Math.max(maxX, curveBounds.maxX);
+                    minY = Math.min(minY, curveBounds.minY);
+                    maxY = Math.max(maxY, curveBounds.maxY);
+                }
+            });
+
+            // 如果边界框无效，使用默认值
+            if (!isFinite(minX) || !isFinite(maxX) || !isFinite(minY) || !isFinite(maxY)) {
+                minX = 300; maxX = 600; minY = 300; maxY = 800;
+            }
+
+            // 添加边距
+            const padding = 20;
+            minX -= padding;
+            maxX += padding;
+            minY -= padding;
+            maxY += padding;
+
+            const width = maxX - minX;
+            const height = maxY - minY;
+
+            // 确保宽高比合理，优先保持字母的原始比例
+            const aspectRatio = width / height;
+            let viewBoxWidth = width;
+            let viewBoxHeight = height;
+            
+            if (aspectRatio > 1.5) {
+                // 字母太宽，调整高度
+                viewBoxHeight = width / 1.2;
+                const heightDiff = viewBoxHeight - height;
+                minY -= heightDiff / 2;
+            } else if (aspectRatio < 0.5) {
+                // 字母太高，调整宽度
+                viewBoxWidth = height * 0.8;
+                const widthDiff = viewBoxWidth - width;
+                minX -= widthDiff / 2;
+            }
+
+            let svg = `<svg width="130" height="130" viewBox="${minX} ${minY} ${viewBoxWidth} ${viewBoxHeight}">`;
+            
+            data.forEach((stroke, index) => {
+                const strokeClass = stroke.type === 'line' ? 'stroke line-stroke' : 'stroke curve-stroke';
+                
+                if (stroke.type === 'line') {
+                    svg += `<line x1="${stroke.startX}" y1="${stroke.startY}" 
+                                  x2="${stroke.endX}" y2="${stroke.endY}" 
+                                  class="${strokeClass}"/>`;
+                } else if (stroke.type === 'curve') {
+                    svg += `<path d="${stroke.curvePath}" class="${strokeClass}"/>`;
+                }
+            });
+            
+            svg += '</svg>';
+            return svg;
+        }
+
+        function createAllLetters() {
+            const container = document.getElementById('letterContainer');
+            
+            for (let i = 0; i < 26; i++) {
+                const letter = String.fromCharCode(97 + i); // a-z
+                const data = letterData[letter];
+                
+                if (data) {
+                    const letterBox = document.createElement('div');
+                    letterBox.className = 'letter-box';
+                    
+                    letterBox.innerHTML = `
+                        <div class="letter-title">${letter.toUpperCase()}</div>
+                        ${createLetterSVG(letter, data)}
+                    `;
+                    
+                    container.appendChild(letterBox);
+                }
+            }
+        }
+
+        // 页面加载完成后创建所有字母
+        document.addEventListener('DOMContentLoaded', createAllLetters);
+    </script>
+</body>
+</html>
